@@ -10,10 +10,16 @@ jobs:
       - name: Get code
         uses: actions/checkout@v3
       - name: Load and Cache dependencies
+        id: display-output
         uses: ./.github/custom-actions/cached-dependencies
         with:
           python-version: '3.10'
           node-version: '18.4.0'
+      - name: display output
+        run: |
+          echo"RepoOwner - ${{steps.display-output.outputs.repo-owner}}"
+          echo"BranchName - ${{steps.display-output.outputs.branch-name}}"
+          
       - name: Lint code
         run: npm run lint
   test:
