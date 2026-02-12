@@ -1,8 +1,33 @@
 name: Cached Dependencies
 description: Caches dependencies for faster builds
+inputs:
+  python-version: 
+    description: "input python version"
+    required: false
+    default: "3.x"
+  node-versin: 
+    description: "input node version"
+    required: false
+    default: "18.x"
+outputs:
+  repo-owner:
+    description: "pass output variables"
+    value: ${{steps.vars.outputs.repoOwnername}}
+  branch-name:
+    description: "branch name"
+    value: ${{steps.vars.outputs.branchname}}
+  
 runs:
   using: "composite"
   steps:
+    - name: setup python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.x'
+    - name: setup node js 
+      uses: actions/setup-node@v6
+      with:
+        node-version: '18.x'
     - name: Cache dependencies
       id: cache
       uses: actions/cache@v4
@@ -12,4 +37,11 @@ runs:
     - name: Install dependencies
       if: steps.cache.outputs.cache-hit != 'true'
       shell: bash
-      run: npm ci
+      run: npm ci 
+    - name: Output Varriable
+      shell: bash
+      id: vars
+      run: |
+        echo "repoOwnername=${{github.repository_owner}}" >> $GITHUB_OUTPUT
+        echo "branchname=main" >> $GITHUB_OUTPUT
+        
