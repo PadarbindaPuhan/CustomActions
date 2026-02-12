@@ -17,8 +17,8 @@ jobs:
           node-version: '18.4.0'
       - name: display output
         run: |
-          echo"RepoOwner - ${{steps.display-output.outputs.repo-owner}}"
-          echo"BranchName - ${{steps.display-output.outputs.branch-name}}"
+          echo "RepoOwner - ${{steps.display-output.outputs.repo-owner}}"
+          echo "BranchName - ${{steps.display-output.outputs.branch-name}}"
           
       - name: Lint code
         run: npm run lint
